@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="nl" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FactuurVrij</title>
+  <meta name="description" content="Gratis professionele facturen maken - zonder account. FactuurVrij" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231f2a3a'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='15' font-weight='bold' fill='white' text-anchor='middle'%3EFV%3C/text%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Arabic:wght@400;500;600;700;800&family=Cairo:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "jspdf": "https://esm.sh/jspdf@2.5.2",
+      "qrcode": "https://esm.sh/qrcode@1.5.3",
+      "html2canvas": "https://esm.sh/html2canvas@1.4.1"
+    }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#builder" data-i18n="navCreate">Factuur maken</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#top">
+        <span class="brand-mark">FV</span>
+        <span class="brand-name">FactuurVrij</span>
+      </a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#builder" data-i18n="navCreate">Factuur maken</a>
+        <a href="#sec-design" data-i18n="navDesign">Ontwerp</a>
+        <a href="#faq" data-i18n="navFaq">Veelgestelde vragen</a>
+      </nav>
+      <div id="lang-switcher" class="lang-switcher" role="group" aria-label="Language"></div>
+      <button type="button" id="theme-toggle" class="theme-toggle" aria-pressed="false" title="Toggle OROVIA style">OROVIA</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-inner">
+        <h1 id="headline" data-i18n="headline">Maak gratis een professionele factuur</h1>
+        <p id="subheadline" class="subheadline" data-i18n="subheadline">Vul je gegevens in, kies je eigen stijl en download direct je factuur als PDF. Zonder account, abonnement of gedoe.</p>
+        <div class="hero-cta">
+          <a href="#builder" class="btn btn-primary btn-lg" data-i18n="ctaPrimary">Start met je factuur</a>
+        </div>
+        <p id="cta-secondary" class="cta-secondary" data-i18n="ctaSecondary">100% gratis · Geen account · Direct PDF · Gegevens blijven op je apparaat</p>
+      </div>
+    </section>
+
+    <section id="builder" class="builder container">
+      <div id="editor" class="editor" role="region" aria-label="Editor"></div>
+      <div class="preview-col">
+        <div class="preview-toolbar">
+          <div id="zoom" class="zoom-controls" role="group" aria-label="Zoom">
+            <button type="button" id="zoom-out" class="zoom-btn" aria-label="Zoom out">−</button>
+            <span id="zoom-pct" class="zoom-pct">100%</span>
+            <button type="button" id="zoom-in" class="zoom-btn" aria-label="Zoom in">+</button>
+            <button type="button" id="zoom-fit" class="zoom-btn zoom-fit" aria-label="Fit to screen">⤢</button>
+          </div>
+          <div class="preview-actions">
+            <button id="btn-download" class="btn btn-primary" data-i18n="downloadPdf">Download PDF</button>
+            <button id="btn-print" class="btn" data-i18n="printBtn">Afdrukken</button>
+          </div>
+        </div>
+        <div class="preview-frame">
+          <div id="preview" class="invoice-page" dir="ltr"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="design" class="info-band">
+      <div class="container">
+        <h2 id="design-anchor" hidden></h2>
+      </div>
+    </section>
+
+    <section class="info container">
+      <div class="info-cols">
+        <div class="info-block">
+          <h2 id="how-title" data-i18n="howTitle">Hoe werkt het?</h2>
+          <ol id="how-list" class="steps"></ol>
+        </div>
+        <div class="info-block">
+          <h2 id="why-title" data-i18n="whyTitle">Waarom FactuurVrij?</h2>
+          <ul id="why-list" class="checks"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" class="faq container">
+      <h2 data-i18n="faqTitle">Veelgestelde vragen</h2>
+      <div id="faq-list" class="faq-list"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer container">
+    <div class="footer-brand">
+      <span class="brand-mark">FV</span>
+      <span class="brand-name">FactuurVrij</span>
+    </div>
+    <p class="footer-credit">FactuurVrij by AminShan</p>
+    <p class="footer-credit powered">Powered by <a class="credit-orovia" href="https://oroviacard.nl/" target="_blank" rel="noopener noreferrer">OROVIA</a></p>
+    <p id="footer-privacy" class="privacy" data-i18n="privacy">Je gegevens blijven op je apparaat. Wij slaan je factuurgegevens niet op.</p>
+  </footer>
+
+  <nav id="mobile-bar" class="mobile-bar" aria-label="Actions">
+    <button id="mob-view" class="btn" data-i18n="viewInvoice">Factuur bekijken</button>
+    <button id="mob-download" class="btn btn-primary" data-i18n="downloadPdf">Download PDF</button>
+  </nav>
+
+  <div id="dialog-root"></div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
