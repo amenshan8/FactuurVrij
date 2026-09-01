@@ -1071,9 +1071,9 @@ textarea:focus {
   border-bottom: 1px solid #eef0f3;
   vertical-align: top;
 }
-.inv-table .c-desc { width: 37%; }
+.inv-table .c-desc { width: 36%; }
 .inv-table .c-qty { width: 9%; }
-.inv-table .c-unit { width: 13%; }
+.inv-table .c-unit { width: 14%; }
 .inv-table .c-price { width: 14%; }
 .inv-table .c-vat { width: 12%; }
 .inv-table .c-amount { width: 15%; }
@@ -1087,12 +1087,17 @@ textarea:focus {
 .inv-table th.c-amount {
   text-align: right;
 }
+.inv-table th.c-qty,
+.inv-table td.c-qty {
+  padding-inline-end: 12px;
+}
 .inv-table th.c-unit,
 .inv-table td.c-unit {
   padding-inline-start: 12px;
 }
 .inv-table td.c-unit {
   color: #6b7280;
+  white-space: nowrap;
 }
 .c-desc span {
   display: block;
@@ -1223,6 +1228,21 @@ textarea:focus {
 .biz-band .meta-v {
   color: #fff;
   font-weight: 600;
+}
+.biz-band .biz-to {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  text-align: end;
+}
+.biz-band .inv-to {
+  margin-bottom: 0;
+}
+.biz-band .inv-to-title {
+  color: rgba(255, 255, 255, 0.75);
+}
+.biz-band .inv-line {
+  color: #fff;
 }
 .biz-body {
   padding-block: 36px 40px;
