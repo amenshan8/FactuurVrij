@@ -12,6 +12,30 @@ import { renderQr } from './qr.js';
 
 let qrAnim = 0;
 
+const MAX_UNDO = 60;
+let undoStack = [];
+
+function pushHistory() {
+  if (undoStack.length >= MAX_UNDO) undoStack.shift();
+  undoStack.push(JSON.parse(JSON.stringify(state)));
+  setUndoDisabled(undoStack.length === 0);
+}
+
+function undo() {
+  if (!undoStack.length) return;
+  const prev = undoStack.pop();
+  Object.assign(state, prev);
+  state.lang = lang;
+  if (undoStack.length === 0) setUndoDisabled(true);
+  renderEditor();
+  if (state.remember) persist(true);
+}
+
+function setUndoDisabled(disabled) {
+  const btn = typeof editorEl !== 'undefined' && editorEl ? editorEl.querySelector('[data-action="undo"]') : null;
+  if (btn) btn.disabled = disabled;
+}
+
 const state = createInitialState();
 let lang = STORE.getLang();
 if (!['nl', 'en', 'ar'].includes(lang)) lang = 'nl';
@@ -37,6 +61,9 @@ const scope = {
   SELECT_FONTS,
   fontFor,
   templateById,
+  get canUndo() {
+    return undoStack.length > 0;
+  },
 };
 
 function createInitialState() {
@@ -173,7 +200,15 @@ function renderEditor() {
 function applyEditorBindings() {
   editorEl.addEventListener('input', onEditorInput);
   editorEl.addEventListener('change', onEditorChange);
+  editorEl.addEventListener('focusin', onEditorFocus);
   editorEl.addEventListener('click', onEditorClick);
+}
+
+function onEditorFocus(e) {
+  const el = e.target.closest('[data-field]');
+  if (!el || el.dataset.focusCaptured) return;
+  pushHistory();
+  el.dataset.focusCaptured = '1';
 }
 
 function onEditorInput(e) {
@@ -285,27 +320,36 @@ function onEditorClick(e) {
 
 function handleAction(action, el, e) {
   switch (action) {
+    case 'undo':
+      undo();
+      break;
     case 'nextNumber':
+      pushHistory();
       state.invoice.number = CALC.nextNumber(state.invoice.number);
       setFieldValue('invoice.number', state.invoice.number);
       updateDynamic();
       break;
     case 'addLine':
-      state.lines.push(STATE.makeLine());
+      pushHistory();
+      const lastLine = state.lines[state.lines.length - 1];
+      state.lines.push(STATE.makeLine({ vat: lastLine ? lastLine.vat : '21' }));
       renderEditor();
       break;
     case 'deleteLine':
+      pushHistory();
       state.lines.splice(Number(el.dataset.i), 1);
       if (state.lines.length === 0) state.lines.push(STATE.makeLine());
       renderEditor();
       break;
     case 'duplicate':
+      pushHistory();
       state.lines.splice(Number(el.dataset.i) + 1, 0, JSON.parse(JSON.stringify(state.lines[Number(el.dataset.i)])));
       renderEditor();
       break;
     case 'moveUp': {
       const i = Number(el.dataset.i);
       if (i > 0) {
+        pushHistory();
         const tmp = state.lines[i - 1];
         state.lines[i - 1] = state.lines[i];
         state.lines[i] = tmp;
@@ -316,6 +360,7 @@ function handleAction(action, el, e) {
     case 'moveDown': {
       const i = Number(el.dataset.i);
       if (i < state.lines.length - 1) {
+        pushHistory();
         const tmp = state.lines[i + 1];
         state.lines[i + 1] = state.lines[i];
         state.lines[i] = tmp;
@@ -324,15 +369,18 @@ function handleAction(action, el, e) {
       break;
     }
     case 'toggleDiscount':
+      pushHistory();
       state.discount.enabled = !state.discount.enabled;
       renderEditor();
       break;
     case 'setTemplate':
+      pushHistory();
       state.design.template = el.dataset.template;
       persist();
       renderEditor();
       break;
     case 'setColor':
+      pushHistory();
       state.design.color = el.dataset.color;
       setFieldValue('design.color', el.dataset.color);
       lastValidColor = el.dataset.color;
@@ -340,11 +388,13 @@ function handleAction(action, el, e) {
       renderEditor();
       break;
     case 'newInvoice':
+      pushHistory();
       Object.assign(state, STATE.emptyState(lang));
       state.lang = lang;
       renderEditor();
       break;
     case 'fillExample':
+      pushHistory();
       Object.assign(state, STATE.exampleState(lang));
       state.lang = lang;
       state.invoice.due = autoDue();
@@ -359,10 +409,12 @@ function handleAction(action, el, e) {
       openLogoPicker();
       break;
     case 'removeLogo':
+      pushHistory();
       state.logo.dataUrl = null;
       renderEditor();
       break;
     case 'rememberNow':
+      pushHistory();
       state.remember = true;
       setFieldValue('remember', true);
       persist();
@@ -392,6 +444,7 @@ function openLogoPicker() {
     }
     const reader = new FileReader();
     reader.onload = () => {
+      pushHistory();
       state.logo.dataUrl = reader.result;
       renderEditor();
     };
@@ -423,6 +476,7 @@ function openConfirmDialog() {
   });
   backdrop.querySelector('[data-dlg="confirm"]').onclick = () => {
     // clear everything including saved data
+    pushHistory();
     Object.assign(state, STATE.emptyState(lang));
     state.lang = lang;
     state.remember = false;
