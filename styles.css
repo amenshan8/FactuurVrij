@@ -1071,11 +1071,11 @@ textarea:focus {
   border-bottom: 1px solid #eef0f3;
   vertical-align: top;
 }
-.inv-table .c-desc { width: 36%; }
-.inv-table .c-qty { width: 9%; }
-.inv-table .c-unit { width: 14%; }
+.inv-table .c-desc { width: 34%; }
+.inv-table .c-qty { width: 8%; }
+.inv-table .c-unit { width: 16%; }
 .inv-table .c-price { width: 14%; }
-.inv-table .c-vat { width: 12%; }
+.inv-table .c-vat { width: 13%; }
 .inv-table .c-amount { width: 15%; }
 .inv-table .c-qty,
 .inv-table .c-price,
@@ -1089,11 +1089,13 @@ textarea:focus {
 }
 .inv-table th.c-qty,
 .inv-table td.c-qty {
-  padding-inline-end: 12px;
+  padding-inline-end: 18px;
+  border-inline-end: 1px solid transparent;
 }
 .inv-table th.c-unit,
 .inv-table td.c-unit {
-  padding-inline-start: 12px;
+  padding-inline-start: 18px;
+  border-inline-start: 1px solid transparent;
 }
 .inv-table td.c-unit {
   color: #6b7280;
@@ -1345,6 +1347,18 @@ textarea:focus {
 }
 .clean-meta .inv-title {
   color: var(--brand);
+}
+.clean-meta .clean-to {
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px solid #e5e7eb;
+  text-align: end;
+}
+.clean-meta .inv-to {
+  margin-bottom: 0;
+}
+.clean-meta .inv-to-title {
+  color: #6b7280;
 }
 .clean-rule {
   height: 2px;
