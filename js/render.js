@@ -710,10 +710,10 @@ export function renderPreview(el, scope) {
           <div class="clean-meta">
             <div class="inv-title">${esc(t('invoiceTitle'))}</div>
             ${metaHtml}
+            ${s.customer.name ? `<div class="clean-to">${customer}</div>` : ''}
           </div>
         </div>
         <div class="clean-rule" aria-hidden="true"></div>
-        ${customer}
         ${table}
         ${totals}
         ${payment}
