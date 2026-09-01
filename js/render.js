@@ -663,11 +663,11 @@ export function renderPreview(el, scope) {
           <div class="biz-meta">
             <div class="inv-title">${esc(t('invoiceTitle'))}</div>
             ${metaHtml}
+            ${s.customer.name ? `<div class="biz-to">${customer}</div>` : ''}
           </div>
         </div>
       </div>
       <div class="doc-pad biz-body">
-        ${customer}
         ${table}
         ${totals}
         ${payment}
