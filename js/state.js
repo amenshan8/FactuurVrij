@@ -21,7 +21,7 @@ export function emptyState(lang) {
       kvk: '', vat: '', iban: '', email: '', phone: '', website: '',
     },
     logo: { dataUrl: null, size: 80 },
-    customer: { name: '', contact: '', street: '', postal: '', city: '', country: '', kvk: '', vat: '' },
+    customer: { name: '', contact: '', email: '', street: '', postal: '', city: '', country: '', kvk: '', vat: '' },
     invoice: {
       number: new Date().getFullYear() + '-001',
       date: iso,
@@ -75,6 +75,7 @@ export function exampleState(lang) {
     postal: '2712 PC',
     city: 'Zoetermeer',
     country: 'Nederland',
+    email: 'info@voorbeeld.nl',
   };
   const today = new Date();
   s.invoice = {
