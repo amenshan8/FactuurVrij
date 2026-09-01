@@ -54,14 +54,14 @@ const UNIT_KEYS = ['unitPiece', 'unitHour', 'unitDay', 'unitMonth', 'unitKm', 'u
 const UNIT_VALS = ['piece', 'hour', 'day', 'month', 'km', 'project', 'service', 'other'];
 const VAT_VALS = ['21', '9', '0', 'exempt', 'reverse'];
 
-function unitOptions(t) {
-  return UNIT_KEYS.map((k, i) => `<option value="${UNIT_VALS[i]}">${esc(t(k))}</option>`).join('');
+function unitOptions(t, current) {
+  return UNIT_KEYS.map((k, i) => `<option value="${UNIT_VALS[i]}" ${UNIT_VALS[i] === current ? 'selected' : ''}>${esc(t(k))}</option>`).join('');
 }
 
-function vatOptions(t) {
+function vatOptions(t, current) {
   return VAT_VALS.map((v) => {
     const key = v === '21' ? 'vat21' : v === '9' ? 'vat9' : v === '0' ? 'vat0' : v === 'exempt' ? 'vatExempt' : 'vatReverse';
-    return `<option value="${v}">${esc(t(key))}</option>`;
+    return `<option value="${v}" ${v === current ? 'selected' : ''}>${esc(t(key))}</option>`;
   }).join('');
 }
 
@@ -93,6 +93,7 @@ export function buildEditor(scope) {
 
   const topbar = `
     <div class="editor-toolbar">
+      <button type="button" class="btn" data-action="undo" ${scope.canUndo ? '' : 'disabled'}>${esc(t('undo'))}</button>
       <button type="button" class="btn" data-action="newInvoice">${esc(t('newInvoice'))}</button>
       <button type="button" class="btn" data-action="fillExample">${esc(t('fillExample'))}</button>
       <button type="button" class="btn" data-action="rememberNow">${esc(t('rememberData'))}</button>
@@ -132,6 +133,7 @@ export function buildEditor(scope) {
       <div class="grid grid-2">
         ${input(t('fCustomerName'), 'customer.name', s.customer.name)}
         ${input(t('fContact'), 'customer.contact', s.customer.contact)}
+        ${input(t('fEmail'), 'customer.email', s.customer.email, '', 'email')}
         ${input(t('fStreet'), 'customer.street', s.customer.street)}
         ${input(t('fPostal'), 'customer.postal', s.customer.postal)}
         ${input(t('fCity'), 'customer.city', s.customer.city)}
@@ -189,7 +191,7 @@ export function buildEditor(scope) {
         <div class="line-cell line-unit">
           <span class="mob-label">${esc(t('colUnit'))}</span>
           <select data-field="${field('unit')}">
-            ${unitOptions(t)}
+            ${unitOptions(t, l.unit)}
           </select>
         </div>
         <div class="line-cell line-price">
@@ -198,7 +200,7 @@ export function buildEditor(scope) {
         </div>
         <div class="line-cell line-vat">
           <span class="mob-label">${esc(t('colVat'))}</span>
-          <select data-field="${field('vat')}">${vatOptions(t)}</select>
+          <select data-field="${field('vat')}">${vatOptions(t, l.vat)}</select>
         </div>
         <div class="line-cell line-amount">
           <span class="mob-label">${esc(t('colAmount'))}</span>
@@ -536,6 +538,7 @@ export function renderPreview(el, scope) {
   const customerLines = [
     s.customer.name,
     s.customer.contact,
+    s.customer.email,
     s.customer.street,
     [s.customer.postal, s.customer.city].filter(Boolean).join(' '),
     s.customer.country,
