@@ -1071,11 +1071,11 @@ textarea:focus {
   border-bottom: 1px solid #eef0f3;
   vertical-align: top;
 }
-.inv-table .c-desc { width: 40%; }
-.inv-table .c-qty { width: 8%; }
-.inv-table .c-unit { width: 10%; }
+.inv-table .c-desc { width: 37%; }
+.inv-table .c-qty { width: 9%; }
+.inv-table .c-unit { width: 13%; }
 .inv-table .c-price { width: 14%; }
-.inv-table .c-vat { width: 13%; }
+.inv-table .c-vat { width: 12%; }
 .inv-table .c-amount { width: 15%; }
 .inv-table .c-qty,
 .inv-table .c-price,
@@ -1086,6 +1086,13 @@ textarea:focus {
 .inv-table th.c-vat,
 .inv-table th.c-amount {
   text-align: right;
+}
+.inv-table th.c-unit,
+.inv-table td.c-unit {
+  padding-inline-start: 12px;
+}
+.inv-table td.c-unit {
+  color: #6b7280;
 }
 .c-desc span {
   display: block;
